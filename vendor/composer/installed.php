@@ -1,22 +1,22 @@
 <?php return array(
     'root' => array(
-        'pretty_version' => '1.0.0+no-version-set',
-        'version' => '1.0.0.0',
+        'pretty_version' => 'dev-test',
+        'version' => 'dev-test',
         'type' => 'library',
         'install_path' => __DIR__ . '/../../',
         'aliases' => array(),
-        'reference' => NULL,
+        'reference' => '43723a85681cad66e33eb524b633e90d2a83a582',
         'name' => 'dojah/dojah-php',
         'dev' => true,
     ),
     'versions' => array(
         'dojah/dojah-php' => array(
-            'pretty_version' => '1.0.0+no-version-set',
-            'version' => '1.0.0.0',
+            'pretty_version' => 'dev-test',
+            'version' => 'dev-test',
             'type' => 'library',
             'install_path' => __DIR__ . '/../../',
             'aliases' => array(),
-            'reference' => NULL,
+            'reference' => '43723a85681cad66e33eb524b633e90d2a83a582',
             'dev_requirement' => false,
         ),
         'graham-campbell/result-type' => array(

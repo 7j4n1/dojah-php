@@ -2,16 +2,34 @@
 
 	namespace DojahCore\Dojah\Routes;
 
+	/**
+	 * The financial services APIs are available to retrieve financial information of users from various banks via internet banking.
+	 * To make use of these APIs, you must have been verified on the Dojah app.
+	 *
+	 * The widget is the interface your users see when they need to submit the internet details.
+	 * You can set up the widget here.
+	 *
+	 * Our financial widget process flow:
+	 * @link https://api-docs.dojah.io/docs/financial-widget
+	 * Your application allows your end users to launch the widget
+	 * The end user fills the registration process which includes selecting financial institution etc.
+	 *
+	 * After successful completion, the widget returns a secret key in your Dojah application which would be used to make APIs calls
+	 *
+	 * @package default
+	 * @author 
+	 **/
 	class Financial extends Core {
 
 		/**
-		 * This end point returns the bank account information of a customer
+		 * Retrieves the bank account information of a customer.
 		 *
-		 * @return JSON data from Dojah API
-		 * @param account_id -> string - required
-		 * @author 
+		 * 
+		 * @param string|required account_id
 		 *
-		 **/
+		 * @return Json data from Dojah API
+		 *
+		 */
 		public function account_information(string $account_id)
 		{
 			$this->setOptions('get', array(
@@ -22,12 +40,22 @@
 		}
 
 		/**
-		 * undocumented function
+		 * This endpoint allows users retrieve customer's transaction details from their bank accounts.
+	     * Transaction details include the bank name linked to the transaction, amount, location, transaction type (credit or debit), time,
+		 * and date of occurrence.
+		 *
+		 * 
+		 * @param string|required account_id Gotten from the financial widget. 
+		 * @param string|optional last_transaction_id Oldest transaction ID you want to start with.
+		 * @param string|optional start_date the start date of transaction you want to get.
+		 * @param string|optional end_date => the end date of transaction you want to get. 
+		 * @param string|optional trans_type => (debit or credit). 
+		 * @param string|optional response_mode => Your preferred mode of results. (paginated,not_paginated, or webhook) Defaults to paginated.
+		 * @param string|optional callback_url => callback url used as webhook.
 		 *
 		 * @return Json data from Dojah API
-		 * @author 
-		 * 
-		 **/
+		 *
+		 */
 		public function account_transactions($account_id, $last_transaction_id=null,$start_date=null,$end_date=null, $trans_type=null, $response_mode=null, $callback_url=null)
 		{
 			$query = array(
@@ -47,6 +75,9 @@
 				}
 			}
 			if (!is_null($response_mode)){
+				if ($response_mode === 'webhook' && is_null($callback_url))
+					throw new Exception("Callback Url required for webhook response type");
+					
 				if (in_array($response_mode, array('paginated', 'not_paginated','webhook'))) {
 					$query['response_mode'] = $response_mode;
 				}else{
@@ -62,11 +93,19 @@
 		}
 
 		/**
-		 * undocumented function
+		 * This endpoint allows you to retrieve recurring payments that occur daily,
+		 * weekly, monthly, or yearly from transactions.
+		 * The endpoint returns the transaction date, amount, the name of the service that the service subscribed to (e.g. Netflix),
+		 * the subscription duration (i.e. yearly or monthly subscription), etc.
+		 * 
+		 * @param string|required account_id => Gotten from the financial widget. 
+		 * @param string|optional start_date => the start date of transaction you want to get.
+		 * @param string|optional end_date => the end date of transaction you want to get. 
+		 * @param string|optional status => (expired or not_expired). 
 		 *
-		 * @return Json Data from Dojah API
-		 * @author 
-		 **/
+		 * @return Json data from Dojah API
+		 *
+		 */		
 		public function account_subscription($account_id, $start_date=null,$end_date=null, $status=null)
 		{
 			$query = array(
@@ -91,11 +130,15 @@
 		}
 
 		/**
-		 * undocumented function
+		 * This endpoint allows developers to determine if a customer is a salary earner, and to determine the amount of employer's income.
+		 *
+		 * 
+		 * @param string|required account_id => gotten from the widget.
+		 * @param string|optional duration => (6_months,12_months,24_months).
 		 *
 		 * @return Json data from Dojah API
-		 * @author 
-		 **/
+		 *
+		 */
 		public function earning_structure($account_id, $duration)
 		{
 			$query = array(
@@ -109,11 +152,15 @@
 			return $this->getClient()->get($this->getBaseUrl . '/api/v1/financial/earning_structure');
 		}
 		/**
-		 * undocumented function
+		 * This endpoint gives insights on users' spending habits based on transactions, and it comes in percentages.
+		 *
+		 * 
+		 * @param string|required account_id => gotten from the widget.
+		 * @param string|optional duration => (6_months,12_months,24_months).
 		 *
 		 * @return Json data from Dojah API
-		 * @author 
-		 **/
+		 *
+		 */
 		public function spending_pattern($account_id, $duration)
 		{
 			$query = array(
@@ -128,11 +175,16 @@
 		}
 
 		/**
-		 * undocumented function
+		 * This endpoint allows you to categorize your transactions
+		 *	using our machine learning model and merchant validation system.
+		 *
+		 * 
+		 * @param string|required description|description of the transaction.
+		 * @param string|required trans_type|(debit or credit). 
 		 *
 		 * @return Json data from Dojah API
-		 * @author 
-		 **/
+		 *
+		 */
 		public function categorize_transactions($description, $trans_type)
 		{
 			if(empty($description))
@@ -160,11 +212,21 @@
 		}
 
 		/**
-		 * undocumented function
+		 * This endpoint will post the transactions and return an account_id.
 		 *
-		 * @return void
-		 * @author 
-		 **/
+		 * 
+		 * @param array|required transactions
+		 *		$sample = array(
+		 *			"transaction_date" => "2021-04-30",
+		 *			"transaction_type" => "credit",
+		 *			"transaction_amount" => "2016.4",
+		 *			"transaction_number" => "12345tgfnde",
+		 *			"transaction_description" => "0033199479:Int.Pd:01-04-2021 to 30-04-2"
+		 *		)
+		 *
+		 * @return Json data from Dojah API
+		 *
+		 */
 		public function send_transactions($transactions)
 		{
 			$this->setOptions('post', array(
@@ -174,11 +236,21 @@
 			return $this->getClient()->post($this->getBaseUrl . '/api/v1/financial/transactions');	
 		}
 		/**
-		 * undocumented function
+		 * This endpoint will update transactions.
 		 *
-		 * @return void
-		 * @author 
-		 **/
+		 * 
+		 * @param array|required transactions
+		 *		$sample = array(
+		 *			"transaction_date" => "2021-04-30",
+		 *			"transaction_type" => "credit",
+		 *			"transaction_amount" => "2016.4",
+		 *			"transaction_number" => "12345tgfnde",
+		 *			"transaction_description" => "0033199479:Int.Pd:01-04-2021 to 30-04-2"
+		 *		)
+		 *
+		 * @return Json data from Dojah API
+		 *
+		 */
 		public function update_transactions($account_id, $transactions)
 		{
 			$this->setOptions('put', array(

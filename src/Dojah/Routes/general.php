@@ -5,14 +5,15 @@
 	class General extends Core {
 
 		/**
-		 * This end point returns the account number
+		 * This endpoint returns the account name linked to an account number.
 		 *
-		 * @return return account name linked to an account number
-		 * @param account_number -> string - required
-		 * @param bank_code -> string - required 
-		 * @author 
+		 * 
+		 * @param string|required account_number
+		 * @param string|required bank_code 
 		 *
-		 **/
+		 * @return Json data from Dojah API
+		 *
+		 */
 		public function resolve_nuban($account_number, $bank_code)
 		{
 			$this->setOptions('get', array(
@@ -24,23 +25,26 @@
 		}
 
 		/**
-		 * undocumented function
+		 *  This endpoint allow you to get Nigerian banks and their codes.
+		 *
 		 *
 		 * @return Json data from Dojah API
-		 * @author 
-		 * 
-		 **/
+		 *
+		 */
 		public function banks()
 		{
 			return $this->getClient()->get($this->getBaseUrl . '/api/v1/general/banks');
 		}
 
 		/**
-		 * undocumented function
+		 *  Provides the details of a card.
 		 *
-		 * @return Json Data from Dojah API
-		 * @author 
-		 **/
+		 * 
+		 * @param string|required card_bin
+		 *
+		 * @return Json data from Dojah API
+		 *
+		 */
 		public function resolve_card_bin($card_bin){
 			$this->setOptions('get', array(
 				'card_bin' => $card_bin
@@ -50,11 +54,15 @@
 		}
 
 		/**
-		 * undocumented function
+		 * Buy airtime across alll mobine network.
+		 *
+		 * 
+		 * @param string|required amount
+		 * @param string|required destination 
 		 *
 		 * @return Json data from Dojah API
-		 * @author 
-		 **/
+		 *
+		 */
 		public function purchase_airtime($amount, $destination)
 		{
 			$this->setOptions('post', array(
@@ -65,11 +73,15 @@
 			return $this->getClient()->post($this->getBaseUrl . '/api/v1/purchase/airtime');
 		}
 		/**
-		 * undocumented function
+		 * Buy Data
+		 *
+		 * 
+		 * @param string|required plan
+		 * @param string|required destination 
 		 *
 		 * @return Json data from Dojah API
-		 * @author 
-		 **/
+		 *
+		 */
 		public function purchase_data($plan, $destination)
 		{
 			$this->setOptions('post', array(
@@ -81,14 +93,17 @@
 		}
 
 		/**
-		 * undocumented function
+		 * Get data plans.
+		 *
+		 * 
+		 * @param string|optional plan
 		 *
 		 * @return Json data from Dojah API
-		 * @author 
-		 **/
+		 *
+		 */
 		public function data_plans($plan='')
 		{
-			if ($plan !== '') {
+			if (!empty($plan)) {
 				$this->setOptions('get', array(
 					'plan' => $plan
 				));
@@ -99,11 +114,11 @@
 		}
 
 		/**
-		 * undocumented function
+		 * Returns your Dojah Wallet Balance.
 		 *
-		 * @return void
-		 * @author 
-		 **/
+		 * @return Json data from Dojah API
+		 *
+		 */
 		public function my_dojah_balance()
 		{
 			return $this->getClient()->get($this->getBaseUrl . '/api/v1/balance');
