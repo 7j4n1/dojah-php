@@ -2,7 +2,7 @@
 
 	namespace DojahCore\Dojah\Routes;
 
-	use \DojahCore\Dojah\Http\HttpClient;
+	use DojahCore\Dojah\Http\HttpClient;
 	use \Exception;
 	use \RuntimeException;
 	// use \dojahcore;
@@ -26,8 +26,16 @@
 			$dotenv->load();
 		
 			// Get the API_KEY and APP_ID FROM ENVIRONMENT
-			$this->API_KEY = getenv("API_KEY");
-			$this->APP_ID = getenv("APP_ID");
+			// First check if it's set, if false then use the default Parameters
+			if(getenv("DOJAH_API_KEY") === false || empty(getenv("DOJAH_API_KEY")))
+				putenv("DOJAH_API_KEY=test_sk_qgTTdKFhWJjguEerqwP5MKOQw");
+
+			if (getenv("DOJAH_APP_ID") === false || empty(getenv("DOJAH_APP_ID")))
+				putenv("DOJAH_APP_ID=619bc460c423930034a34052");
+
+
+			$this->API_KEY = getenv("DOJAH_API_KEY");
+			$this->APP_ID = getenv("DOJAH_APP_ID");
 
 			// check if it is a testing key or not
 			
