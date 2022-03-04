@@ -1,5 +1,5 @@
 {
-    "name": "dojah/dojah-php",
+    "name": "7j4n1/dojahphp",
     "description": "PHP Wrapper for Dojah Restful API",
     "type": "library",
     "autoload": {
