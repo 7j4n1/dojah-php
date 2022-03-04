@@ -1,0 +1,21 @@
+{
+    "name": "7j4n1/dojahphp",
+    "description": "PHP Wrapper for Dojah Restful API",
+    "type": "library",
+    "autoload": {
+        "psr-4": {
+            "DojahCore\\": "src/"
+        }
+    },
+    "authors": [
+        {
+            "name": "7j4n1",
+            "email": "ahmaholy@gmail.com"
+        }
+    ],
+    "minimum-stability": "dev",
+    "require": {
+        "vlucas/phpdotenv": "5.4.x-dev",
+        "ext-curl": "*"
+    }
+}
