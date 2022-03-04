@@ -16,6 +16,7 @@
 		protected $API_KEY;
 		protected $APP_ID;
 		private $API_URL;
+		protected $Apivalue, $Appvalue;
 		/**
 		 * undocumented class variable
 		 *
@@ -23,45 +24,70 @@
 		 * @var Api_Id
 		 *
 		 **/
-		public function __construct($api_key=null, $api_id=null){
-			// $dotenv = Dotenv\Dotenv::createImmutable(__DIR__);
-			// $dotenv->load();
+		public function __construct(){
+			$dotenv = Dotenv\Dotenv::createImmutable(dirname(__DIR__, 2));
+			$dotenv->load();
 		
 			// Get the API_KEY and APP_ID FROM ENVIRONMENT
 			// First check if it's set, if false then use the default Parameters
-			if(is_null($api_key)){
-				if(getenv("DOJAH_API_KEY") === false || empty(getenv("DOJAH_API_KEY"))){
-					putenv("DOJAH_API_KEY=test_sk_qgTTdKFhWJjguEerqwP5MKOQw");
-				}else{
-					putenv("DOJAH_API_KEY=test_sk_qgTTdKFhWJjguEerqwP5MKOQw");
+			if (isset($_ENV["DOJAH_API_KEY"])) {
+				$Apivalue = $_ENV["DOJAH_API_KEY"];
+				if (empty($Apivalue) || $Apivalue === "" || is_null($Apivalue)) {
+					$this->API_KEY = "test_sk_qgTTdKFhWJjguEerqwP5MKOQw";
+				} else {
+					$this->API_KEY = $_ENV["DOJAH_API_KEY"];
 				}
-
-			}else {
-				if(getenv("DOJAH_API_KEY") === false || empty(getenv("DOJAH_API_KEY"))){
-					putenv("DOJAH_API_KEY=".$api_key);
-				}else {
-					putenv("DOJAH_API_KEY=".$api_key);
-				}
+				
+			} else {
+				$this->API_KEY = "test_sk_qgTTdKFhWJjguEerqwP5MKOQw";
 			}
 			
-
-			if(is_null($api_id)){
-				if(getenv("DOJAH_APP_ID") === false || empty(getenv("DOJAH_APP_ID"))){
-					putenv("DOJAH_APP_ID=619bc460c423930034a34052");
-				}else {
-					putenv("DOJAH_APP_ID=619bc460c423930034a34052");
+			if (isset($_ENV["DOJAH_APP_ID"])) {
+				$Appvalue = $_ENV["DOJAH_APP_ID"];
+				if (empty($Appvalue) || $Appvalue === "" || is_null($Appvalue)) {
+					$this->APP_ID = "619bc460c423930034a34052";
+				} else {
+					$this->APP_ID = $_ENV["DOJAH_APP_ID"];
 				}
-			}else {
-				if(getenv("DOJAH_APP_ID") === false || !empty(getenv("DOJAH_APP_ID"))){
-					putenv("DOJAH_APP_ID=".$api_id);
-				}else {
-					putenv("DOJAH_APP_ID=".$api_id);
-				}
+				
+			} else {
+				$this->APP_ID = "619bc460c423930034a34052";
 			}
+			
+			
+			// if(is_null($api_key)){
+			// 	if(getenv("DOJAH_API_KEY") === false || empty(getenv("DOJAH_API_KEY"))){
+			// 		putenv("DOJAH_API_KEY=test_sk_qgTTdKFhWJjguEerqwP5MKOQw");
+			// 	}else{
+			// 		putenv("DOJAH_API_KEY=test_sk_qgTTdKFhWJjguEerqwP5MKOQw");
+			// 	}
+
+			// }else {
+			// 	if(getenv("DOJAH_API_KEY") === false || empty(getenv("DOJAH_API_KEY"))){
+			// 		putenv("DOJAH_API_KEY=".$api_key);
+			// 	}else {
+			// 		putenv("DOJAH_API_KEY=".$api_key);
+			// 	}
+			// }
+			
+
+			// if(is_null($api_id)){
+			// 	if(getenv("DOJAH_APP_ID") === false || empty(getenv("DOJAH_APP_ID"))){
+			// 		putenv("DOJAH_APP_ID=619bc460c423930034a34052");
+			// 	}else {
+			// 		putenv("DOJAH_APP_ID=619bc460c423930034a34052");
+			// 	}
+			// }else {
+			// 	if(getenv("DOJAH_APP_ID") === false || !empty(getenv("DOJAH_APP_ID"))){
+			// 		putenv("DOJAH_APP_ID=".$api_id);
+			// 	}else {
+			// 		putenv("DOJAH_APP_ID=".$api_id);
+			// 	}
+			// }
 
 
-			$this->API_KEY = getenv("DOJAH_API_KEY");
-			$this->APP_ID = getenv("DOJAH_APP_ID");
+			// $this->API_KEY = $_ENV["DOJAH_API_KEY"];
+			// $this->APP_ID = $_ENV["DOJAH_APP_ID"];
 
 			// check if it is a testing key or not
 			
@@ -117,5 +143,8 @@
 		public function setClient($client)
 		{
 			$this->client = $client;
+		}
+		public function getDir() {
+			return $this->getBaseUrl . " API: " . $this->API_KEY . " APP: ". $this->APP_ID;
 		}
 	}

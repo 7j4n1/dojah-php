@@ -5,8 +5,9 @@
 
     try
     {
-        $result = $dojah->general()->banks();
-        
+        $result = $dojah->general()->getDir();
+
+        // echo var_dump($_ENV);
         echo $result;
     }catch(Exception $e){
         echo $e->getMessage();

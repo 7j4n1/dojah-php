@@ -163,4 +163,8 @@
 			}
 			
 		}
+
+		public function getUrl(){
+			return $this->getBaseUrl;
+		}
 	}
