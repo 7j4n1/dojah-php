@@ -6,6 +6,7 @@
     try
     {
         $result = $dojah->general()->banks();
+        
         echo $result;
     }catch(Exception $e){
         echo $e->getMessage();

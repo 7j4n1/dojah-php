@@ -65,7 +65,7 @@
 
 			// check if it is a testing key or not
 			
-			$this->API_URL = (substr($this->API_KEY, 0, 4) !== "test") ? 'https://sandbox.dojah.io' : 'https://api.dojah.io' ;
+			$this->API_URL = (substr($this->API_KEY, 0, 4) === "test") ? 'https://sandbox.dojah.io' : 'https://api.dojah.io' ;
 			$this->getBaseUrl = $this->API_URL;
 			$this->client = new HttpClient();
 
