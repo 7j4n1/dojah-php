@@ -16,6 +16,7 @@
     "minimum-stability": "dev",
     "require": {
         "vlucas/phpdotenv": "5.4.x-dev",
-        "ext-curl": "*"
+        "ext-curl": "*",
+        "phpunit/phpunit": "10.0.x-dev"
     }
 }
