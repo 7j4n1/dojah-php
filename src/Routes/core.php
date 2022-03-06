@@ -8,6 +8,7 @@
 	use \Exception;
 	use \RuntimeException;
 	use \Dotenv;
+ use PhpParser\Node\Stmt\TryCatch;
 
 	abstract class Core {
 		private $client;
@@ -25,8 +26,13 @@
 		 *
 		 **/
 		public function __construct(){
-			$dotenv = Dotenv\Dotenv::createImmutable(dirname(__DIR__, 2));
-			$dotenv->load();
+			try{
+				$dotenv = Dotenv\Dotenv::createImmutable(dirname(__DIR__, 2));
+				$dotenv->load();
+			}catch(\Exception $e){
+				throw new RuntimeException("Error loading .env file. Please specify .env file in the root folder");
+			}
+			
 		
 			// Get the API_KEY and APP_ID FROM ENVIRONMENT
 			// First check if it's set, if false then use the default Parameters
@@ -53,41 +59,6 @@
 			} else {
 				$this->APP_ID = "619bc460c423930034a34052";
 			}
-			
-			
-			// if(is_null($api_key)){
-			// 	if(getenv("DOJAH_API_KEY") === false || empty(getenv("DOJAH_API_KEY"))){
-			// 		putenv("DOJAH_API_KEY=test_sk_qgTTdKFhWJjguEerqwP5MKOQw");
-			// 	}else{
-			// 		putenv("DOJAH_API_KEY=test_sk_qgTTdKFhWJjguEerqwP5MKOQw");
-			// 	}
-
-			// }else {
-			// 	if(getenv("DOJAH_API_KEY") === false || empty(getenv("DOJAH_API_KEY"))){
-			// 		putenv("DOJAH_API_KEY=".$api_key);
-			// 	}else {
-			// 		putenv("DOJAH_API_KEY=".$api_key);
-			// 	}
-			// }
-			
-
-			// if(is_null($api_id)){
-			// 	if(getenv("DOJAH_APP_ID") === false || empty(getenv("DOJAH_APP_ID"))){
-			// 		putenv("DOJAH_APP_ID=619bc460c423930034a34052");
-			// 	}else {
-			// 		putenv("DOJAH_APP_ID=619bc460c423930034a34052");
-			// 	}
-			// }else {
-			// 	if(getenv("DOJAH_APP_ID") === false || !empty(getenv("DOJAH_APP_ID"))){
-			// 		putenv("DOJAH_APP_ID=".$api_id);
-			// 	}else {
-			// 		putenv("DOJAH_APP_ID=".$api_id);
-			// 	}
-			// }
-
-
-			// $this->API_KEY = $_ENV["DOJAH_API_KEY"];
-			// $this->APP_ID = $_ENV["DOJAH_APP_ID"];
 
 			// check if it is a testing key or not
 			
